@@ -57,6 +57,7 @@ type PageData struct {
 var data PageData
 var indexTmpl = template.Must(template.ParseFiles("./templates/index.html"))
 var aboutTmpl = template.Must(template.ParseFiles("./templates/about.html"))
+var bioTmpl = template.Must(template.ParseFiles("./templates/bio.html"))
 var errTmpl = template.Must(template.ParseFiles("./templates/error.html"))
 
 func main() {
@@ -67,8 +68,9 @@ func main() {
 	}
 
 	http.Handle("/assets/", http.FileServer(http.Dir(".")))
-	http.HandleFunc("/", Handler)
-	http.HandleFunc("/about", aboutHandler)
+	http.HandleFunc("/", homeHandler)
+	http.HandleFunc("/groupie-tracker/about", aboutHandler)
+	http.HandleFunc("/groupie-tracker/bio", bioHandler)
 	log.Println("Starting server on port 8080...")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

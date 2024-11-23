@@ -6,67 +6,28 @@
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
     <title>Groupie Tracker</title>
     <link rel="stylesheet" href="/assets/style.css">
+    <script src="/assets/script.js" defer></script>
 </head>
 <body>
     <div class="top-bar">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/about" class="nav-link">About</a>
+        <a href="/groupie-tracker" class="nav-link">Home</a>
+        <a href="/groupie-tracker/about" class="nav-link">About</a>
     </div>
     <div style="padding-top: 60px;">
         <h1>Groupie Tracker</h1>
         <div class="artist-grid">
             {{range $index, $artist := .Artists}}
-            <div class="artist-card">
-                <div class="artist-image-container">
-                    <img src="{{$artist.Image}}" alt="{{$artist.Name}}" class="artist-image">
+            <form action="/groupie-tracker/bio" method="POST">
+                <div class="artist-card">
+                    <div class="artist-image-container">
+                        <a href="#" class="submitLink">
+                            <img src="{{$artist.Image}}" alt="{{$artist.Name}}" class="artist-image">
+                        </a>
+                    </div>
+                    <a href="#" class="submitLink">{{$artist.Name}}</a>
+                    <input type="hidden" name="name" value="{{$artist.Name}}">
                 </div>
-                <h2>{{$artist.Name}}</h2>
-                <p><strong>Created:</strong> {{$artist.CreationDate}}</p>
-                <p><strong>First Album:</strong> {{$artist.FirstAlbum}}</p>
-                <div class="artist-info">
-                    <h3><strong>Band Members</strong></h3>
-                    <ul class="members">
-                        {{range $artist.Members}}
-                        <li>{{.}}</li>
-                        {{end}}
-                    </ul>
-                    {{with index $.Locations.Index $index}}
-                    <div class="locations">
-                        <h3><strong>Locations</strong></h3>
-                        <ul>
-                            {{range .Locations}}
-                            <li>{{.}}</li>
-                            {{end}}
-                        </ul>
-                    </div>
-                    {{end}}
-                    {{with index $.Dates.Index $index}}
-                    <div class="dates">
-                        <h3><strong>Dates</strong></h3>
-                        <ul>
-                            {{range .Dates}}
-                            <li>{{.}}</li>
-                            {{end}}
-                        </ul>
-                    </div>
-                    {{end}}
-                    {{with index $.Relations.Index $index}}
-                    <div class="relations">
-                        <h3><strong>Schedule</strong></h3>
-                        {{range $location, $dates := .DatesLocations}}
-                        <div class="relation-group">
-                            <p><strong>{{$location}}</strong></p>
-                            <ul>
-                                {{range $dates}}
-                                <li>{{.}}</li>
-                                {{end}}
-                            </ul>
-                        </div>
-                        {{end}}
-                    </div>
-                    {{end}}
-                </div>
-            </div>
+            </form>
             {{end}}
         </div>
     </div>

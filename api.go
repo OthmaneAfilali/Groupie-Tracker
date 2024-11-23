@@ -94,4 +94,3 @@ func validateData(data PageData) error {
 
     return nil
 }
-

@@ -22,6 +22,7 @@ body {
     color: var(--text-color);
 }
 
+/* Top Bar and Footer */
 .top-bar, .footer-bar {
     display: flex;
     justify-content: center;
@@ -55,6 +56,7 @@ body {
     color: var(--secondary-color);
 }
 
+/* Headings */
 h1 {
     text-align: center;
     color: var(--primary-color);
@@ -73,6 +75,13 @@ h1::after {
     border-radius: 2px;
 }
 
+h3 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+/* Containers */
 .error-container, .content-container {
     max-width: 90vw;
     margin: auto;
@@ -81,6 +90,43 @@ h1::after {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     text-align: center;
+}
+
+.artist-bio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.artist-image-container {
+    margin-bottom: 20px;
+}
+
+.artist-image {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.artist-details {
+    text-align: left;
+    max-width: 600px;
+    margin: auto;
+}
+
+.members-list {
+    list-style: none;
+    padding: 0;
+}
+
+.members-list li {
+    background-color: var(--background-color);
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
 }
 
 p {
@@ -99,6 +145,7 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Artist Grid and Cards */
 .artist-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -147,62 +194,12 @@ a:hover {
     transform: scale(1.02);
 }
 
-h2 {
+.artist-card a {
     color: var(--primary-color);
     font-size: 1.5rem;
     margin: 15px 0;
     font-weight: 600;
-}
-
-h3 {
-    color: var(--secondary-color);
-    font-size: 1.2rem;
-    margin: 15px 0 10px;
-    font-weight: 500;
-}
-
-.members {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0;
-}
-
-.members li {
-    margin: 8px 0;
-    padding: 5px 10px;
-    background-color: var(--background-color);
-    border-radius: 20px;
-    display: inline-block;
-    margin-right: 8px;
-    font-size: 0.9rem;
-}
-
-.locations, .dates, .relations {
-    margin-top: 15px;
-    padding: 15px;
-    background-color: var(--background-color);
-    border-radius: var(--border-radius);
-    transition: var(--transition);
-}
-
-.locations:hover, .dates:hover, .relations:hover {
-    background-color: #e8eef3;
-}
-
-.locations ul, .dates ul, .relations ul {
-    list-style: none;
-    padding: 0;
-    margin: 8px 0;
-}
-
-.locations li, .dates li, .relations li {
-    margin: 5px 0;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-strong {
-    color: var(--secondary-color);
+    text-decoration: none;
 }
 
 /* Responsive adjustments */
