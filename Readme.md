@@ -93,7 +93,7 @@ Static files for enhancing the user experience:
 ### Running the Application
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/OthmaneAfilali/Groupie-Tracker.git
    cd groupie-tracker
 2. Execute the program:
    ```bash
