@@ -24,8 +24,12 @@ func errorHandler(w http.ResponseWriter, statusCode int) {
 
 func ErrorCheck(err error) bool {
 	if err != nil {
-		log.Println(err)
+		logError("Error occurred", err)
 		return true
 	}
 	return false
+}
+
+func logError(message string, err error) {
+	log.Printf("%s: %v", message, err)
 }

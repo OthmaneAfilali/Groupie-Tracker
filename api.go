@@ -11,34 +11,44 @@ func fetchAllData() PageData {
 	baseURL := "https://groupietrackers.herokuapp.com/api"
 
 	var index Index
-	body := FetchApi(baseURL)
-	if body == nil || ErrorCheck(json.Unmarshal(body, &index)) {
+	if err := fetchAndUnmarshal(baseURL, &index); err != nil {
+		logError("Failed to fetch index data", err)
 		return PageData{}
 	}
 
 	var data PageData
-
-	body = FetchApi(index.Artists)
-	if body == nil || ErrorCheck(json.Unmarshal(body, &data.Artists)) {
+	if err := fetchAndUnmarshal(index.Artists, &data.Artists); err != nil {
+		logError("Failed to fetch artists data", err)
 		return PageData{}
 	}
 
-	body = FetchApi(index.Locations)
-	if body == nil || ErrorCheck(json.Unmarshal(body, &data.Locations)) {
+	if err := fetchAndUnmarshal(index.Locations, &data.Locations); err != nil {
+		logError("Failed to fetch locations data", err)
 		return PageData{}
 	}
 
-	body = FetchApi(index.Dates)
-	if body == nil || ErrorCheck(json.Unmarshal(body, &data.Dates)) {
+	if err := fetchAndUnmarshal(index.Dates, &data.Dates); err != nil {
+		logError("Failed to fetch dates data", err)
 		return PageData{}
 	}
 
-	body = FetchApi(index.Relation)
-	if body == nil || ErrorCheck(json.Unmarshal(body, &data.Relations)) {
+	if err := fetchAndUnmarshal(index.Relation, &data.Relations); err != nil {
+		logError("Failed to fetch relations data", err)
 		return PageData{}
 	}
 
 	return data
+}
+
+func fetchAndUnmarshal(url string, v interface{}) error {
+	body := FetchApi(url)
+	if body == nil {
+		return fmt.Errorf("failed to fetch data from %s", url)
+	}
+	if err := json.Unmarshal(body, v); err != nil {
+		return fmt.Errorf("failed to unmarshal data from %s: %w", url, err)
+	}
+	return nil
 }
 
 func FetchApi(url string) []byte {
