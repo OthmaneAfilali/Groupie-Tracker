@@ -3,6 +3,7 @@ package main
 import (
     "log"
     "net/http"
+    "html/template"
 )
 
 type Index struct {
@@ -54,6 +55,9 @@ type PageData struct {
 }
 
 var data PageData
+var indexTmpl = template.Must(template.ParseFiles("./templates/index.html"))
+var aboutTmpl = template.Must(template.ParseFiles("./templates/about.html"))
+var errTmpl = template.Must(template.ParseFiles("./templates/error.html"))
 
 func main() {
     data = fetchAllData()
@@ -64,6 +68,7 @@ func main() {
 
     http.Handle("/assets/", http.FileServer(http.Dir(".")))
     http.HandleFunc("/", Handler)
+    http.HandleFunc("/about", aboutHandler)
     log.Println("Listening on :8080...")
     log.Fatal(http.ListenAndServe(":8080", nil))
 }
