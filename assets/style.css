@@ -89,13 +89,13 @@ p {
     line-height: 1.6;
 }
 
-.top-bar a {
+a {
+    color: var(--secondary-color);
     text-decoration: none;
     transition: var(--transition);
 }
 
-.top-bar a:hover {
-    color: var(--secondary-color);
+a:hover {
     text-decoration: underline;
 }
 
@@ -114,11 +114,24 @@ p {
     box-shadow: var(--box-shadow);
     transition: var(--transition);
     overflow: hidden;
+    max-height: 300px; /* Initial height */
+    position: relative;
 }
 
 .artist-card:hover {
-    transform: translateY(-5px);
+    max-height: 600px; /* Expanded height */
+    transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+.artist-info {
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.artist-card:hover .artist-info {
+    opacity: 1;
 }
 
 .artist-image {

@@ -4,7 +4,6 @@ import (
 	"io"
 	"encoding/json"
 	"net/http"
-	"log"
 	"fmt"
 )
 
@@ -96,10 +95,3 @@ func validateData(data PageData) error {
     return nil
 }
 
-func ErrorCheck(err error) bool {
-    if err != nil {
-        log.Println(err)
-        return true
-    }
-    return false
-}

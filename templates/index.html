@@ -9,73 +9,69 @@
 </head>
 <body>
     <div class="top-bar">
-        <a href="/groupie-tracker" class="nav-link">Home</a>
+        <a href="/" class="nav-link">Home</a>
         <a href="/about" class="nav-link">About</a>
     </div>
-    <h1>Groupie Tracker</h1>
-    
-    <div class="artist-grid">
-        {{range $index, $artist := .Artists}}
-        <div class="artist-card">
-            <div class="artist-image-container">
-                <img src="{{$artist.Image}}" alt="{{$artist.Name}}" class="artist-image">
-            </div>
-            
-            <div class="artist-info">
+    <div style="padding-top: 60px;">
+        <h1>Groupie Tracker</h1>
+        <div class="artist-grid">
+            {{range $index, $artist := .Artists}}
+            <div class="artist-card">
+                <div class="artist-image-container">
+                    <img src="{{$artist.Image}}" alt="{{$artist.Name}}" class="artist-image">
+                </div>
                 <h2>{{$artist.Name}}</h2>
                 <p><strong>Created:</strong> {{$artist.CreationDate}}</p>
                 <p><strong>First Album:</strong> {{$artist.FirstAlbum}}</p>
-                
-                <h3>Band Members</h3>
-                <ul class="members">
-                    {{range $artist.Members}}
-                    <li>{{.}}</li>
-                    {{end}}
-                </ul>
-            </div>
-
-            {{with index $.Locations.Index $index}}
-            <div class="locations">
-                <h3>Concert Locations</h3>
-                <ul>
-                    {{range .Locations}}
-                    <li>{{.}}</li>
-                    {{end}}
-                </ul>
-            </div>
-            {{end}}
-
-            {{with index $.Dates.Index $index}}
-            <div class="dates">
-                <h3>Concert Dates</h3>
-                <ul>
-                    {{range .Dates}}
-                    <li>{{.}}</li>
-                    {{end}}
-                </ul>
-            </div>
-            {{end}}
-
-            {{with index $.Relations.Index $index}}
-            <div class="relations">
-                <h3>Concert Schedule</h3>
-                {{range $location, $dates := .DatesLocations}}
-                <div class="relation-group">
-                    <p><strong>{{$location}}</strong></p>
-                    <ul>
-                        {{range $dates}}
+                <div class="artist-info">
+                    <h3><strong>Band Members</strong></h3>
+                    <ul class="members">
+                        {{range $artist.Members}}
                         <li>{{.}}</li>
                         {{end}}
                     </ul>
+                    {{with index $.Locations.Index $index}}
+                    <div class="locations">
+                        <h3><strong>Locations</strong></h3>
+                        <ul>
+                            {{range .Locations}}
+                            <li>{{.}}</li>
+                            {{end}}
+                        </ul>
+                    </div>
+                    {{end}}
+                    {{with index $.Dates.Index $index}}
+                    <div class="dates">
+                        <h3><strong>Dates</strong></h3>
+                        <ul>
+                            {{range .Dates}}
+                            <li>{{.}}</li>
+                            {{end}}
+                        </ul>
+                    </div>
+                    {{end}}
+                    {{with index $.Relations.Index $index}}
+                    <div class="relations">
+                        <h3><strong>Schedule</strong></h3>
+                        {{range $location, $dates := .DatesLocations}}
+                        <div class="relation-group">
+                            <p><strong>{{$location}}</strong></p>
+                            <ul>
+                                {{range $dates}}
+                                <li>{{.}}</li>
+                                {{end}}
+                            </ul>
+                        </div>
+                        {{end}}
+                    </div>
+                    {{end}}
                 </div>
-                {{end}}
             </div>
             {{end}}
         </div>
-        {{end}}
     </div>
     <footer class="footer-bar">
-        <a>Created by Othmane Afilali (oafilali)</a>
+        <a href="https://github.com/OthmaneAfilali" >Created by Othmane Afilali (oafilali)</a>
     </footer>
 </body>
 </html>
