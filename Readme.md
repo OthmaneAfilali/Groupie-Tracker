@@ -97,7 +97,7 @@ Static files for enhancing the user experience:
    cd groupie-tracker
 2. Execute the program:
    ```bash
-   go run main.go
+   go run .
 3. Open your browser and visit:
     ```bash
     http://localhost:8080/groupie-tracker
