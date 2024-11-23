@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groupie Tracker</title>
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+    <h1>Groupie Tracker</h1>
+    
+    <div class="artist-grid">
+        {{range $index, $artist := .Artists}}
+        <div class="artist-card">
+            <div class="artist-image-container">
+                <img src="{{$artist.Image}}" alt="{{$artist.Name}}" class="artist-image">
+            </div>
+            
+            <div class="artist-info">
+                <h2>{{$artist.Name}}</h2>
+                <p><strong>Created:</strong> {{$artist.CreationDate}}</p>
+                <p><strong>First Album:</strong> {{$artist.FirstAlbum}}</p>
+                
+                <h3>Band Members</h3>
+                <ul class="members">
+                    {{range $artist.Members}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+
+            {{with index $.Locations.Index $index}}
+            <div class="locations">
+                <h3>Concert Locations</h3>
+                <ul>
+                    {{range .Locations}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+            {{end}}
+
+            {{with index $.Dates.Index $index}}
+            <div class="dates">
+                <h3>Concert Dates</h3>
+                <ul>
+                    {{range .Dates}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+            {{end}}
+
+            {{with index $.Relations.Index $index}}
+            <div class="relations">
+                <h3>Concert Schedule</h3>
+                {{range $location, $dates := .DatesLocations}}
+                <div class="relation-group">
+                    <p><strong>{{$location}}</strong></p>
+                    <ul>
+                        {{range $dates}}
+                        <li>{{.}}</li>
+                        {{end}}
+                    </ul>
+                </div>
+                {{end}}
+            </div>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+</body>
+</html>
