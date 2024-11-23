@@ -1,9 +1,9 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"strconv"
-	"log"
 )
 
 func errorHandler(w http.ResponseWriter, statusCode int) {
@@ -23,9 +23,9 @@ func errorHandler(w http.ResponseWriter, statusCode int) {
 }
 
 func ErrorCheck(err error) bool {
-    if err != nil {
-        log.Println(err)
-        return true
-    }
-    return false
+	if err != nil {
+		log.Println(err)
+		return true
+	}
+	return false
 }

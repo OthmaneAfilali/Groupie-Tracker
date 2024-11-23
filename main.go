@@ -54,11 +54,13 @@ type PageData struct {
 	Relations Relation
 }
 
-var data PageData
-var indexTmpl = template.Must(template.ParseFiles("./templates/index.html"))
-var aboutTmpl = template.Must(template.ParseFiles("./templates/about.html"))
-var bioTmpl = template.Must(template.ParseFiles("./templates/bio.html"))
-var errTmpl = template.Must(template.ParseFiles("./templates/error.html"))
+var (
+	data      PageData
+	indexTmpl = template.Must(template.ParseFiles("./templates/index.html"))
+	aboutTmpl = template.Must(template.ParseFiles("./templates/about.html"))
+	bioTmpl   = template.Must(template.ParseFiles("./templates/bio.html"))
+	errTmpl   = template.Must(template.ParseFiles("./templates/error.html"))
+)
 
 func main() {
 	data = fetchAllData()

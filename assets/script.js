@@ -12,5 +12,4 @@ function addSubmitLinkListeners() {
     });
 }
 
-// Call the function to add the event listeners
 document.addEventListener('DOMContentLoaded', addSubmitLinkListeners);
