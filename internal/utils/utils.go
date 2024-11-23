@@ -1,13 +1,14 @@
-package main
+package utils
 
 import (
+	"groupie-tracker/internal/shared"
 	"log"
 	"net/http"
 	"strconv"
 )
 
-func errorHandler(w http.ResponseWriter, statusCode int) {
-	page := &Page{Header: strconv.Itoa(statusCode)}
+func ErrorHandler(w http.ResponseWriter, statusCode int) {
+	page := &shared.Page{Header: strconv.Itoa(statusCode)}
 	w.WriteHeader(statusCode)
 	switch page.Header {
 	case "400":
@@ -19,17 +20,17 @@ func errorHandler(w http.ResponseWriter, statusCode int) {
 	default:
 		page.Msg = "500 internal server error"
 	}
-	errTmpl.Execute(w, page)
+	shared.ErrTmpl.Execute(w, page)
 }
 
 func ErrorCheck(err error) bool {
 	if err != nil {
-		logError("Error occurred", err)
+		LogError("Error occurred", err)
 		return true
 	}
 	return false
 }
 
-func logError(message string, err error) {
+func LogError(message string, err error) {
 	log.Printf("%s: %v", message, err)
 }

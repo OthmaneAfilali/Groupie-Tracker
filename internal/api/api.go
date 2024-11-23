@@ -1,40 +1,42 @@
-package main
+package api
 
 import (
+	"groupie-tracker/internal/utils"
+	"groupie-tracker/internal/shared"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 )
 
-func fetchAllData() PageData {
+func FetchAllData() shared.PageData {
 	baseURL := "https://groupietrackers.herokuapp.com/api"
 
-	var index Index
+	var index shared.Index
 	if err := fetchAndUnmarshal(baseURL, &index); err != nil {
-		logError("Failed to fetch index data", err)
-		return PageData{}
+		utils.LogError("Failed to fetch index data", err)
+		return shared.PageData{}
 	}
 
-	var data PageData
+	var data shared.PageData
 	if err := fetchAndUnmarshal(index.Artists, &data.Artists); err != nil {
-		logError("Failed to fetch artists data", err)
-		return PageData{}
+		utils.LogError("Failed to fetch artists data", err)
+		return shared.PageData{}
 	}
 
 	if err := fetchAndUnmarshal(index.Locations, &data.Locations); err != nil {
-		logError("Failed to fetch locations data", err)
-		return PageData{}
+		utils.LogError("Failed to fetch locations data", err)
+		return shared.PageData{}
 	}
 
 	if err := fetchAndUnmarshal(index.Dates, &data.Dates); err != nil {
-		logError("Failed to fetch dates data", err)
-		return PageData{}
+		utils.LogError("Failed to fetch dates data", err)
+		return shared.PageData{}
 	}
 
 	if err := fetchAndUnmarshal(index.Relation, &data.Relations); err != nil {
-		logError("Failed to fetch relations data", err)
-		return PageData{}
+		utils.LogError("Failed to fetch relations data", err)
+		return shared.PageData{}
 	}
 
 	return data
@@ -53,19 +55,19 @@ func fetchAndUnmarshal(url string, v interface{}) error {
 
 func FetchApi(url string) []byte {
 	res, err := http.Get(url)
-	if ErrorCheck(err) {
+	if utils.ErrorCheck(err) {
 		return nil
 	}
 	defer res.Body.Close()
 
 	body, err := io.ReadAll(res.Body)
-	if ErrorCheck(err) {
+	if utils.ErrorCheck(err) {
 		return nil
 	}
 	return body
 }
 
-func validateData(data PageData) error {
+func ValidateData(data shared.PageData) error {
 	if len(data.Artists) == 0 {
 		return fmt.Errorf("artists data is empty")
 	}

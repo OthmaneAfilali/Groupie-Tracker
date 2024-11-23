@@ -30,9 +30,15 @@ This project is built using **Go** and adheres to robust development practices, 
 /groupie-tracker
 │
 ├── main.go
-├── handlers.go
-├── api.go
-├── utils.go
+├── internal/
+│   ├── api/
+│   │   └── api.go
+│   ├── handlers/
+│   │   └── handlers.go
+│   ├── shared/
+│   │   └── shared.go
+│   └── utils/
+│       └── utils.go
 ├── templates/
 │   ├── index.html
 │   ├── about.html
@@ -41,6 +47,7 @@ This project is built using **Go** and adheres to robust development practices, 
 ├── assets/
 │   ├── style.css
 │   └── script.js
+└── .gitignore
 ```
 ## File Descriptions
 

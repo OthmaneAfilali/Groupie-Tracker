@@ -1,6 +1,9 @@
 package main
 
 import (
+	"groupie-tracker/internal/api"
+	"groupie-tracker/internal/handlers"
+	"groupie-tracker/internal/shared"
 	"html/template"
 	"log"
 	"net/http"
@@ -54,25 +57,24 @@ type PageData struct {
 	Relations Relation
 }
 
-var (
-	data      PageData
-	indexTmpl = template.Must(template.ParseFiles("./templates/index.html"))
-	aboutTmpl = template.Must(template.ParseFiles("./templates/about.html"))
-	bioTmpl   = template.Must(template.ParseFiles("./templates/bio.html"))
-	errTmpl   = template.Must(template.ParseFiles("./templates/error.html"))
-)
+func init() {
+	shared.IndexTmpl = template.Must(template.ParseFiles("./templates/index.html"))
+	shared.AboutTmpl = template.Must(template.ParseFiles("./templates/about.html"))
+	shared.BioTmpl = template.Must(template.ParseFiles("./templates/bio.html"))
+	shared.ErrTmpl = template.Must(template.ParseFiles("./templates/error.html"))
+}
 
 func main() {
-	data = fetchAllData()
-	err := validateData(data)
+	shared.Data = api.FetchAllData()
+	err := api.ValidateData(shared.Data)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	http.Handle("/assets/", http.FileServer(http.Dir(".")))
-	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/groupie-tracker/about", aboutHandler)
-	http.HandleFunc("/groupie-tracker/bio", bioHandler)
+	http.HandleFunc("/", handlers.HomeHandler)
+	http.HandleFunc("/groupie-tracker/about", handlers.AboutHandler)
+	http.HandleFunc("/groupie-tracker/bio", handlers.BioHandler)
 	log.Println("Starting server on port 8080...")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

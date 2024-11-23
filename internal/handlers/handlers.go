@@ -1,52 +1,49 @@
-package main
+package handlers
 
 import (
+	"groupie-tracker/internal/utils"
+	"groupie-tracker/internal/shared"
 	"net/http"
 )
 
-type Page struct {
-	Header string
-	Msg    string
-}
-
-func homeHandler(w http.ResponseWriter, req *http.Request) {
+func HomeHandler(w http.ResponseWriter, req *http.Request) {
 	if req.URL.Path != "/" && req.URL.Path != "/groupie-tracker" {
-		errorHandler(w, http.StatusNotFound)
+		utils.ErrorHandler(w, http.StatusNotFound)
 		return
 	}
 
 	if req.Method != "GET" {
-		errorHandler(w, http.StatusMethodNotAllowed)
+		utils.ErrorHandler(w, http.StatusMethodNotAllowed)
 		return
 	}
 
-	indexTmpl.Execute(w, data)
+	shared.IndexTmpl.Execute(w, shared.Data)
 }
 
-func aboutHandler(w http.ResponseWriter, req *http.Request) {
+func AboutHandler(w http.ResponseWriter, req *http.Request) {
 	if req.Method != "GET" {
-		errorHandler(w, http.StatusMethodNotAllowed)
+		utils.ErrorHandler(w, http.StatusMethodNotAllowed)
 		return
 	}
-	page := &Page{Header: "About Us"}
-	aboutTmpl.Execute(w, page)
+	page := &shared.Page{Header: "About Us"}
+	shared.AboutTmpl.Execute(w, page)
 }
 
-func bioHandler(w http.ResponseWriter, req *http.Request) {
+func BioHandler(w http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "POST":
 		handleBioPost(w, req)
 	case "GET":
 		handleBioGet(w, req)
 	default:
-		errorHandler(w, http.StatusMethodNotAllowed)
+		utils.ErrorHandler(w, http.StatusMethodNotAllowed)
 	}
 }
 
 func handleBioPost(w http.ResponseWriter, req *http.Request) {
 	err := req.ParseForm()
-	if ErrorCheck(err) {
-		errorHandler(w, http.StatusBadRequest)
+	if utils.ErrorCheck(err) {
+		utils.ErrorHandler(w, http.StatusBadRequest)
 		return
 	}
 
@@ -66,8 +63,8 @@ func handleBioGet(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var artist *People
-	for _, a := range data.Artists {
+	var artist *shared.People
+	for _, a := range shared.Data.Artists {
 		if a.Name == artistName {
 			artist = &a
 			break
@@ -79,5 +76,5 @@ func handleBioGet(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	bioTmpl.Execute(w, artist)
+	shared.BioTmpl.Execute(w, artist)
 }
