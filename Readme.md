@@ -49,44 +49,90 @@ This project is built using **Go** and adheres to robust development practices, 
 │   └── script.js
 └── .gitignore
 ```
-## File Descriptions
+### File Descriptions
 
-### `main.go`
-The application's entry point:
-- Initializes and validates data from the API.
-- Configures HTTP routes.
-- Launches the web server.
+#### `main.go`
+**Purpose:** Entry point of the application.  
+**Responsibilities:**  
+- Initializes templates and sets up HTTP routes.  
+- Fetches and validates data from the API.  
+- Starts the web server.  
 
-### `handlers.go`
-Manages server-side logic for different routes:
-- **`homeHandler`**: Renders the home page.
-- **`aboutHandler`**: Displays the about page.
-- **`bioHandler`**: Handles POST and GET requests for artist details.
+**Key Functions:**  
+- **`init()`**: Initializes the HTML templates.  
+- **`main()`**: Fetches data, validates it, sets up routes, and launches the server.  
 
-### `api.go`
-Handles API communication and data parsing:
-- **`fetchAllData`**: Aggregates all API data and prepares it for rendering.
-- **`fetchAndUnmarshal`**: Fetches JSON data and converts it to Go structures.
-- **`FetchApi`**: Makes HTTP GET requests.
-- **`validateData`**: Ensures data correctness and completeness.
+#### `internal/api/api.go`
+**Purpose:** Handles communication with the API and data processing.  
+**Responsibilities:**  
+- Fetches and parses API data.  
+- Validates the integrity and completeness of the data.  
 
-### `utils.go`
-Utility functions for error management:
-- **`errorHandler`**: Renders error pages.
-- **`ErrorCheck`**: Identifies and logs runtime errors.
-- **`logError`**: Custom error logger for debugging.
+**Key Functions:**  
+- **`FetchAllData`**: Aggregates data from the API into a `PageData` struct.  
+- **`fetchAndUnmarshal`**: Fetches JSON data from the API and unmarshals it into a provided interface.  
+- **`FetchApi`**: Makes HTTP GET requests and returns the response body.  
+- **`ValidateData`**: Ensures that fetched data is accurate and complete.  
 
-### `templates/`
-Contains HTML files for rendering:
-- `index.html`: Home page template.
-- `about.html`: About the application.
-- `bio.html`: Artist details.
-- `error.html`: Error messages and handling.
+#### `internal/handlers/handlers.go`
+**Purpose:** Manages server-side logic for routing and rendering pages.  
+**Responsibilities:**  
+- Handles HTTP requests and responses for different routes.  
+- Processes form submissions and manages user interactions.  
 
-### `assets/`
-Static files for enhancing the user experience:
-- `style.css`: Custom styles for the application.
-- `script.js`: Client-side logic, including form handling and dynamic interactions.
+**Key Functions:**  
+- **`HomeHandler`**: Renders the home page template with data.  
+- **`AboutHandler`**: Renders the about page template with relevant information.  
+- **`BioHandler`**: Manages GET and POST requests for artist details, delegating to `handleBioGet` or `handleBioPost`.  
+- **`handleBioGet`**: Fetches artist data for GET requests and renders the bio page.  
+- **`handleBioPost`**: Validates form input for POST requests and redirects to the bio page.  
+
+#### `internal/shared/types.go`
+**Purpose:** Defines shared types and data structures.  
+**Key Types:**  
+- **`Index`**: Represents index data from the API.  
+- **`People`**: Represents an artist or band.  
+- **`Location`**: Represents concert locations.  
+- **`Date`**: Represents concert dates.  
+- **`Relation`**: Links artists, dates, and locations.  
+- **`PageData`**: Aggregates all fetched data types.  
+- **`Page`**: Represents a page with a header and message.  
+
+#### `internal/shared/templates.go`
+**Purpose:** Stores shared template variables and references.  
+**Key Variables:**  
+- **`Data`**: Holds the fetched and aggregated API data.  
+- **`IndexTmpl`**: Home page template reference.  
+- **`AboutTmpl`**: About page template reference.  
+- **`BioTmpl`**: Bio page template reference.  
+- **`ErrTmpl`**: Error page template reference.  
+
+#### `internal/utils/utils.go`
+**Purpose:** Utility functions for error handling and logging.  
+**Key Functions:**  
+- **`ErrorHandler`**: Renders appropriate error pages based on HTTP status codes.  
+- **`ErrorCheck`**: Logs errors if present and returns a status indicator.  
+- **`LogError`**: Logs error messages with custom details.  
+
+#### `templates/`
+**Purpose:** Contains HTML templates for rendering different application pages.  
+**Files:**  
+- **`index.html`**: Home page template.  
+- **`about.html`**: About page template.  
+- **`bio.html`**: Artist details page template.  
+- **`error.html`**: Error handling and messaging template.  
+
+#### `assets/`
+**Purpose:** Holds static files to enhance user experience.  
+**Files:**  
+- **`style.css`**: Provides custom styling for the application.  
+- **`script.js`**: Contains client-side logic, including form submissions and dynamic interactions.  
+
+#### `.gitignore`
+**Purpose:** Specifies files and directories to ignore in the repository.  
+**Contents:**  
+- Common files like `.DS_Store` or other system-generated files.  
+- Temporary or sensitive files that should not be committed to version control.  
 
 ---
 
