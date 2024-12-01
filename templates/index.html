@@ -1,38 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
-    <title>Groupie Tracker</title>
-    <link rel="stylesheet" href="/assets/style.css">
-    <script src="/assets/script.js" defer></script>
+    <title>Artist Names</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
+
 <body>
-    <div class="top-bar">
-        <a href="/groupie-tracker" class="nav-link">Home</a>
-        <a href="/groupie-tracker/about" class="nav-link">About</a>
-    </div>
-    <div style="padding-top: 60px;">
-        <h1>Groupie Tracker</h1>
-        <div class="artist-grid">
-            {{range $index, $artist := .Artists}}
-            <form action="/groupie-tracker/bio" method="POST">
-                <div class="artist-card">
-                    <div class="artist-image-container">
-                        <a href="#" class="submitLink">
-                            <img src="{{$artist.Image}}" alt="{{$artist.Name}}" class="artist-image">
-                        </a>
+
+    <div class="container">
+
+        <!-- Sidebar with filter selections -->
+        <div class="sidebar">
+
+            <h1>Filter</h1>
+            <form method="POST" action="/">
+
+                <button type="submit" name="reset" value="rd">Reset to defaults</button><br><br>
+
+                <label for="order">Order by:</label>
+                <select name="order" id="order">
+                    <option value="namedown" {{if eq .Order "namedown" }}selected{{end}}>Name A-Z</option>
+                    <option value="fodown" {{if eq .Order "fodown" }}selected{{end}}>Started, old-new</option>
+                    <option value="fadown" {{if eq .Order "fadown" }}selected{{end}}>First album, old-new</option>
+                    <option value="perdown" {{if eq .Order "perdown" }}selected{{end}}>Latest performance, old-new
+                    </option>
+                    <option value="nameup" {{if eq .Order "nameup" }}selected{{end}}>Name Z-A</option>
+                    <option value="foup" {{if eq .Order "foup" }}selected{{end}}>Started, new-old</option>
+                    <option value="faup" {{if eq .Order "faup" }}selected{{end}}>First album, new-old</option>
+                    <option value="perup" {{if eq .Order "perup" }}selected{{end}}>Latest performance, new-old</option>
+                </select>
+                <br><br>
+
+                <b>Artist type</b><br>
+                <label>
+                    <input type="checkbox" name="band" {{if .BandCheck}}checked{{end}}> Band
+                </label>
+                <label>
+                    <input type="checkbox" name="solo" {{if .SoloCheck}}checked{{end}}> Solo act
+                </label><br><br>
+
+                <b>Starting year</b><br>
+                <div>
+                    <div style="display: inline-block">
+                        <label>
+                            From: <input type="number" name="fomin" value="{{.CreMin}}" min="{{index .MinMax 0}}"
+                                max="{{index .MinMax 1}}" />
+                        </label>
                     </div>
-                    <a href="#" class="submitLink">{{$artist.Name}}</a>
-                    <input type="hidden" name="name" value="{{$artist.Name}}">
+                    <div style="display: inline-block">
+                        <label>
+                            &nbsp;&nbsp;To: <input type="number" name="fomax" value="{{.CreMax}}"
+                                min="{{index .MinMax 0}}" max="{{index .MinMax 1}}" />
+                        </label>
+                    </div>
+                </div><br>
+
+                <b>First album release</b><br>
+                <div>
+                    <div style="display: inline-block">
+                        <label>
+                            From: <input type="number" name="famin" value="{{.FiAlMin}}" min="{{index .MinMax 2}}"
+                                max="{{index .MinMax 3}}" />
+                        </label>
+                    </div>
+                    <div style="display: inline-block">
+                        <label>
+                            &nbsp;&nbsp;To: <input type="number" name="famax" value="{{.FiAlMax}}"
+                                min="{{index .MinMax 2}}" max="{{index .MinMax 3}}" />
+                        </label>
+                    </div>
+                </div><br>
+
+                <b>Most recent performance</b><br>
+                <div>
+                    <div style="display: inline-block">
+                        <label>
+                            From: <input type="number" name="pemin" value="{{.PeMin}}" min="{{index .MinMax 4}}"
+                                max="{{index .MinMax 5}}" />
+                        </label>
+                    </div>
+                    <div style="display: inline-block">
+                        <label>
+                            &nbsp;&nbsp;To: <input type="number" name="pemax" value="{{.PeMax}}"
+                                min="{{index .MinMax 4}}" max="{{index .MinMax 5}}" />
+                        </label>
+                    </div>
+                </div><br>
+
+                <b>Countries visited</b><br>
+                <button id="checkAll" name="all">Select All</button>
+                <button id="uncheckAll" name="all">Unselect All</button>
+                <br><br>
+                <div class="country-checkboxes">
+                    {{ range .Countries}}
+                    <label><input type="checkbox" class="countryCB" name="{{.Name}}" {{if .Selected}}checked{{end}}>
+                        {{.Name}}</label>
+                    {{end}}
                 </div>
+                <br>
             </form>
-            {{end}}
+        </div>
+
+        <!-- Main window with artist Info -->
+        <div class="content">
+
+            <h1>Artists</h1>
+            {{len .Artists}} results
+
+            <div class="artistcolumn">
+
+                {{range .Artists}}
+                <div class="artistbox">
+                    <div class="collapsible">
+                        <img src="{{.Image}}" alt="{{.Name}} Image" class="artist-image">
+                        <div style="flex-grow: 1; display: flex; align-items: center;">
+                            <h3 style="margin: 0px;">{{.Name}}</h3>
+                        </div>
+                    </div>
+                    <div class="collapse-content">
+                        <div class="info-column">
+                            <p>Started in {{.CreDate}}</p>
+                            <p><b>Members:</b><br>
+                                {{range .Members}}
+                                {{.}}<br>
+                                {{end}}</p>
+                            <p><b>First album release:</b><br>
+                                {{.FAString}}</p>
+                            <!-- <p><b>Concerts:</b><br>
+                                {{range .Gigs}}
+                                {{.DateStr}} {{.Locale}}, {{.Country}}<br>
+                                {{end}}</p> -->
+                            <p><a href="/artist/{{.Id}}">Artist page</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                {{end}}
+            </div>
+
         </div>
     </div>
-    <footer class="footer-bar">
-        <a href="https://github.com/OthmaneAfilali" >Created by Othmane Afilali (oafilali)</a>
-    </footer>
+
+    {{ template "footer" . }}
+    {{ template "modebuttonscript" . }}
+
+    <script>
+        /* Make all checkboxes, number inputs and dropdowns submit the form */
+        document.addEventListener("DOMContentLoaded", function () {   // Makes the script run only after html content is loaded
+            const inputs = document.querySelectorAll("input[type='checkbox'], input[type='number'], select");
+            inputs.forEach(input => {
+                input.addEventListener("change", function () {
+                    this.form.submit();
+                });
+            });
+        });
+
+        /* "checkAll" checks all countries  */
+        document.getElementById('checkAll').addEventListener('click', () => {
+            const countryChecks = document.querySelectorAll('.countryCB');
+            countryChecks.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        });
+
+        /* "uncheckAll" unchecks all countries  */
+        document.getElementById('uncheckAll').addEventListener('click', () => {
+            const countryChecks = document.querySelectorAll('.countryCB');
+            countryChecks.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+
+        /* expand the collapsible and reveal the hidden info box, and the reverse */
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    /* this.style.height = "320px"; */
+                    this.style.borderRadius = "10px";
+                    this.children[0].style.width = "240px";
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    /* this.style.height = "320px"; */
+                    this.style.borderRadius = "10px 10px 0px 0px";
+                    this.children[0].style.width = "240px";
+                }
+            });
+        }
+    </script> 
+
 </body>
+
 </html>

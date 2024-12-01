@@ -1,0 +1,24 @@
+
+To do:
+
+x Generate list of countries automatically
+x Generate min and max values automatically
+- Return correct error states
+    . Maybe create a custom page to display them
+    . 404
+    . 500 especially. Are there 504, 505 etc. errors?
+- Could the buttons, dropdowns, number selections or checkboxes be prettier?
+    . Javascript?
+    . A double slider could be nice for ranges, but a bit exessive and possibly messy code
+
+
+Bonus:
+
+    general
+    - Goroutines? Would they be useful?
+    - Deploy the site. Where? How do you set up your own server online?
+
+    basic
+    x No unnecessary data requests
+    - Testfile? Could be difficult but it is recommended.
+
